@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1467714266 source:e:\tetask\mycache\main.cpp
+	<iostream>
+
+1467707339 source:e:\tetask\mycache\src\mycache.cpp
+	"MyCache.h"
+
+1467714446 e:\tetask\mycache\include\mycache.h
+	<bits/c++config.h>
+
