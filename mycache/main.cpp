@@ -6,32 +6,36 @@ using namespace std;
 
 int main()
 {
-    //ofstream ofstrm("t.txt", ofstream::binary);
-    ifstream ifstrm("t.txt", ifstream::binary);
+    MyCache cache;
+    cache.init();
+    cache.setsize(10);
 
-    MyCache t;
-    t.init();
-    t.setsize(524288);
+    cache.write("1111111", 7);
+    char buf[20];
+    int n = cache.read(buf, 20);
+    buf[n] = '\0';
 
-    string bs;
-    while (ifstrm >> bs) {
-        if (t.write(bs.c_str(), bs.size()) < 0) {
-            cout << "full!" << endl;
-            return -1;
-        }
-        cout << bs;
+    cout << buf << endl;
+
+    cache.write("00000000", 8);
+    n = cache.read(buf, 20);
+    buf[n] = '\0';
+
+    cout << buf << endl;
+
+    cache.write("1111111", 7);
+    if(cache.write("0000", 4) < 0 ) {
+        cout << "fail write" << endl;
     }
-    cout << endl;
+    n = cache.read(buf, 20);
+    buf[n] = '\0';
 
-    char s[700];
-    size_t cnt = t.read(s, sizeof(s));
-    cout << cnt << endl;
-    s[cnt] = '\0';
-    cout << s << endl;
+    cout << buf << endl;
 
-    cnt = t.read(s, sizeof(s));
-    cout << cnt << endl;
-    s[cnt] = '\0';
-    cout << s << endl;
+    if  (cache.read(buf, 20) <= 0) {
+        cout << "read fail" << endl;
+    }
+
+    cache.deinit();
     return 0;
 }

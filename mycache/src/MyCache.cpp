@@ -1,5 +1,4 @@
 #include "MyCache.h"
-#include <iostream>
 #include <cstring>
 
 MyCache::MyCache() : pBuffer(nullptr), bufSize(131072), pos(0), mCount(0)
@@ -39,8 +38,10 @@ ssize_t MyCache::read(void *pBuf, size_t cnt)
 {
     ssize_t rsize = 0;
 
-    if (mCount == 0) {
-        rsize = -1;
+    if (cnt <= 0) {
+        return 0;
+    } else if (mCount == 0) {
+        return -1;
     } else if (cnt >= mCount) {
         rsize = processRead((char *)pBuf, mCount);
     } else {
@@ -56,19 +57,20 @@ ssize_t MyCache::write(const void *pBuf, size_t cnt)
         return -1;
     }
 
+    const char *pChar = (const char *)pBuf;
+
     //缓存区中空闲的第一个位置；
     size_t np = (pos + mCount) % bufSize;
 
     //判断到缓存区尾部的空间是否可容纳下数据
     if (np + cnt <= bufSize) {
-        memcpy(pBuffer + np, pBuf, cnt);
+        memcpy(pBuffer + np, pChar, cnt);
     } else {
         size_t firsWriteSize = bufSize - np;
-        memcpy(pBuffer + np, pBuf, firsWriteSize);
-        np = 0;
+        memcpy(pBuffer + np, pChar, firsWriteSize);
 
         size_t secWriteSize = cnt - firsWriteSize;
-        memcpy(pBuffer + np, pBuf, secWriteSize);
+        memcpy(pBuffer, pChar + firsWriteSize, secWriteSize);
     }
 
     mCount += cnt;
@@ -78,30 +80,31 @@ ssize_t MyCache::write(const void *pBuf, size_t cnt)
 
 ssize_t MyCache::processRead(char *pChar, size_t cnt)
 {
+    if (cnt > mCount) {
+        return -1;
+    }
+
+    //要求读取数据区尾部开区间值，作判断用，
+    //该值大于bufSize说明有部分数据存放于缓存区首部
     size_t tailPos = pos + cnt;
     if (tailPos <= bufSize) {
-
         memcpy(pChar, pBuffer + pos, cnt);
-
         pos += cnt;
         if (pos == bufSize)         //循环使用缓存区
             pos = 0;
     } else {
-        size_t pChar_CurrPos = 0;
+
+        //1.读取缓存区尾部数据
         size_t firstReadSize = bufSize - pos;
-
         memcpy(pChar, pBuffer + pos, firstReadSize);
-
         pos = 0;
-        mCount -= firstReadSize;
-        pChar_CurrPos = firstReadSize;
 
+        //2.读取缓存区首部数据。
         size_t secReadSize = cnt - firstReadSize;
-
-        memcpy(pChar + pChar_CurrPos, pBuffer + pos, secReadSize);
-
+        memcpy(pChar + firstReadSize, pBuffer + pos, secReadSize);
         pos += secReadSize;
     }
+
     mCount -= cnt;
 
     return (ssize_t)cnt;

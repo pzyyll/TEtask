@@ -8,29 +8,30 @@
 1467714446 e:\tetask\mycache\include\mycache.h
 	<bits/c++config.h>
 
-1467729310 source:d:\project\work\tetask\mycache\main.cpp
+1467846277 source:d:\project\work\tetask\mycache\main.cpp
 	<iostream>
 	<fstream>
 	"MyCache.h"
 
-1467727854 source:d:\project\work\tetask\mycache\src\mycache.cpp
+1467846836 source:d:\project\work\tetask\mycache\src\mycache.cpp
 	"MyCache.h"
+	<iostream>
+	<cstring>
 
-1467729477 d:\project\work\tetask\mycache\include\mycache.h
+1467846310 d:\project\work\tetask\mycache\include\mycache.h
 	<cstddef>
 	<sys/types.h>
 
-1467795825 source:e:\tetask\tetask\mycache\main.cpp
+1467882707 source:e:\tetask\tetask\mycache\main.cpp
 	<iostream>
 	<fstream>
 	"MyCache.h"
 
-1467798858 e:\tetask\tetask\mycache\include\mycache.h
+1467860774 e:\tetask\tetask\mycache\include\mycache.h
 	<cstddef>
 	<sys/types.h>
 
-1467798454 source:e:\tetask\tetask\mycache\src\mycache.cpp
+1467880576 source:e:\tetask\tetask\mycache\src\mycache.cpp
 	"MyCache.h"
-	<iostream>
 	<cstring>
 
