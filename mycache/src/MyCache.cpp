@@ -1,7 +1,7 @@
 #include "MyCache.h"
 #include <cstring>
 
-MyCache::MyCache() : pBuffer(nullptr), bufSize(131072), pos(0), mCount(0)
+MyCache::MyCache() : pBuffer(nullptr), bufSize(0), pos(0), mCount(0)
 {
 }
 
@@ -10,8 +10,10 @@ MyCache::~MyCache()
     deinit();
 }
 
-void MyCache::init()
+void MyCache::init(const size_t mSize)
 {
+    deinit();
+    bufSize = mSize;
     pBuffer = new char[bufSize]();
 }
 
@@ -23,16 +25,7 @@ void MyCache::deinit()
     }
 }
 
-void MyCache::setsize(const size_t msize)
-{
-    bufSize = msize;
-    init();
-}
 
-size_t MyCache::maxsize()
-{
-    return bufSize;
-}
 
 ssize_t MyCache::read(void *pBuf, size_t cnt)
 {

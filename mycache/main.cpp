@@ -7,8 +7,7 @@ using namespace std;
 int main()
 {
     MyCache cache;
-    cache.init();
-    cache.setsize(10);
+    cache.init(10);
 
     cache.write("1111111", 7);
     char buf[20];

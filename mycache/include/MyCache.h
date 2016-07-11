@@ -4,23 +4,17 @@
 #include <cstddef>
 #include <sys/types.h>
 
-//using std::size_t;
-
 class MyCache
 {
     public:
-        //typedef std::size_t size_t;
         using size_t = std::size_t;
 
         MyCache();
         virtual ~MyCache();
 
         // 初始化缓存区，要求显示调用。
-        void init();
+        void init(const size_t mSize);
         void deinit();
-
-        void setsize(const size_t msize);
-        size_t maxsize();
 
         //参数设置：(pBuf, cnt: 需要写入的数据的首地址，以及字节数)
         //函数返回值为成功写入字节数，失败情况下返回-1;
